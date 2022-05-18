@@ -1,6 +1,6 @@
 package com.example.timeregistration.security.jwt;
 
-import com.example.timeregistration.exception.JwtAuthenticationException;
+import com.example.timeregistration.exception.custom.JwtAuthenticationException;
 import com.example.timeregistration.security.model.Role;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;

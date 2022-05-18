@@ -1,4 +1,4 @@
-package com.example.timeregistration.exception;
+package com.example.timeregistration.exception.custom;
 
 import org.springframework.security.core.AuthenticationException;
 

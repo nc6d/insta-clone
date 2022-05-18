@@ -1,5 +1,6 @@
 package com.example.timeregistration.service.impl;
 
+import com.example.timeregistration.security.exception.Status409UserAlreadyRegistered;
 import com.example.timeregistration.security.model.Role;
 import com.example.timeregistration.model.User;
 import com.example.timeregistration.repo.UserRepository;
@@ -28,6 +29,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User register(User user, Role role) {
+        userRepository.findByEmail(user.getEmail())
+                .ifPresent(repoUser -> {
+                    throw new Status409UserAlreadyRegistered("Email " + user.getEmail() + " is already registered");
+                });
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(role);
 

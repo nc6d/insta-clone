@@ -2,6 +2,7 @@ package com.example.timeregistration.security;
 
 import com.example.timeregistration.security.dto.AuthenticationRequestDTO;
 import com.example.timeregistration.security.dto.UserRegistrationDto;
+import com.example.timeregistration.security.dto.UserRegisteredDto;
 import com.example.timeregistration.security.model.Role;
 import com.example.timeregistration.model.User;
 import com.example.timeregistration.security.jwt.JwtTokenProvider;
@@ -37,11 +38,19 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@Valid @RequestBody UserRegistrationDto userRegistrationDto) {
+    public ResponseEntity<UserRegisteredDto> registerUser(@Valid @RequestBody UserRegistrationDto userRegistrationDto) {
 
         User savedUser = userService.register(modelMapper.map(userRegistrationDto, User.class), Role.USER);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper.map(savedUser, UserRegisteredDto.class));
+    }
+
+    @PostMapping("/register/admin")
+    public ResponseEntity<UserRegisteredDto> registerAdmin(@Valid @RequestBody UserRegistrationDto userRegistrationDto) {
+
+        User savedUser = userService.register(modelMapper.map(userRegistrationDto, User.class), Role.ADMIN);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper.map(savedUser, UserRegisteredDto.class));
     }
 
     @PostMapping("/login")
