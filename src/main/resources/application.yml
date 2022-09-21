@@ -1,0 +1,21 @@
+spring:
+    datasource:
+        url: jdbc:postgresql://localhost:5432/insta-clone
+        username: postgres
+        password: postgres
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+#        show-sql: true
+#        generate-ddl: true
+
+jwt:
+    token:
+        secret: jwtappdemo
+        expired: 10800000000000
+
+file:
+    upload-dir: src/main/resources/static/images
+    storage:
+        mapping: file:///D:/JavaProjects/insta-clone/src/main/resources/static/images/
+    path:
+        prefix: /image
