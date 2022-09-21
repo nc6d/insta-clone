@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+    database:
+        image: postgis/postgis
+        hostname: postgres-db-postgis
+        container_name: postgres-db-postgis
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: insta-clone
+        volumes:
+            - ./data:/var/lib/postgresql/data
+        restart: unless-stopped
+        networks:
+            - backend
+
+    dbadmin:
+        image: dpage/pgadmin4
+        container_name: postgres-db-admin-postgis
+        depends_on:
+            - database
+        ports:
+            - "5555:80"
+        environment:
+            PGADMIN_DEFAULT_EMAIL: 6od92002@gmail.com
+            PGADMIN_DEFAULT_PASSWORD: password
+        restart: unless-stopped
+        networks:
+            - backend
+
+networks:
+    backend:
+
