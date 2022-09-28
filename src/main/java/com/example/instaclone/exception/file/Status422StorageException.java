@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-public class Status422StorageException extends Exception {
+public class Status422StorageException extends RuntimeException {
 
     public Status422StorageException(String message) {
         super(message);

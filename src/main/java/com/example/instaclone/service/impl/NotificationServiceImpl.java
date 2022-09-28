@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -40,7 +41,12 @@ public class NotificationServiceImpl implements NotificationService {
             throws Status404UserNotFoundException {
         return notificationRepository
                 .findAllByReceiver(userService.findByUsername(authFacade.getUsername()))
-                .orElseThrow(() -> new Status404UserNotFoundException("User not found"));
+                .orElseThrow(() -> new Status404UserNotFoundException("User not found"))
+                .stream()
+                .sorted(Comparator
+                        .comparing(NotificationEntity::getTimestamp)
+                        .reversed())
+                .toList();
     }
 
 }

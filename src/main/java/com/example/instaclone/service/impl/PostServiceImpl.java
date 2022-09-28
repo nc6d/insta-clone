@@ -2,7 +2,6 @@ package com.example.instaclone.service.impl;
 
 import com.example.instaclone.exception.entity.Status404PostNotFoundException;
 import com.example.instaclone.exception.entity.Status404UserNotFoundException;
-import com.example.instaclone.exception.file.Status422StorageException;
 import com.example.instaclone.model.Post;
 import com.example.instaclone.model.SponsoredPost;
 import com.example.instaclone.model.Subscription;
@@ -40,12 +39,9 @@ public class PostServiceImpl implements PostService {
         List<PostPicture> postPictures = new ArrayList<>();
         Arrays.stream(files)
                 .forEach(file -> {
-                    PostPicture postPicture;
-                    try {
-                        postPicture = new PostPicture(imageStorageService.upload(file, post.getAuthor()).getUri(), post);
-                    } catch (Status422StorageException e) {
-                        throw new RuntimeException(e);
-                    }
+                    PostPicture postPicture = new PostPicture(
+                            imageStorageService.upload(file, post.getAuthor()).getUri(), post);
+
                     postPictures.add(postPicture);
                     imageStorageService.savePostPicture(postPicture);
 
@@ -63,7 +59,10 @@ public class PostServiceImpl implements PostService {
                 .caption(caption)
                 .build());
 
-        post.setImages(parsePicturesFromEntryFilesAndSave(post, files));
+        post.setImageUris(parsePicturesFromEntryFilesAndSave(post, files).stream()
+                .map(PostPicture::getUri)
+                .toList());
+//        post.setImages(parsePicturesFromEntryFilesAndSave(post, files));
 
         return post;
     }

@@ -1,26 +1,30 @@
 package com.example.instaclone.model.picture;
 
 import com.example.instaclone.model.User;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
-@Setter
-@Getter
-@PrimaryKeyJoinColumn
+@Data
 @Table(name = "user_picture")
-public class ProfilePicture extends Picture {
+public class ProfilePicture {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "picture_id")
+    private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id")
-    protected User owner;
+    private User owner;
+
+    private String uri;
 
     public ProfilePicture(String uri, User owner) {
-        super(uri);
+        this.uri = uri;
         this.owner = owner;
 
     }

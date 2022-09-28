@@ -1,8 +1,6 @@
 package com.example.instaclone.model;
 
-import com.example.instaclone.model.picture.PostPicture;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -41,9 +39,8 @@ public class Post {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "post")
     Set<Like> likes;
 
-    @JsonManagedReference
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "post")
-    List<PostPicture> images;
+    @Transient
+    List<String> imageUris;
 
     LocalDateTime publicationDate;
 
