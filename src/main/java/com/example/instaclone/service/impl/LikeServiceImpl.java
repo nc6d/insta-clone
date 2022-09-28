@@ -1,6 +1,6 @@
 package com.example.instaclone.service.impl;
 
-import com.example.instaclone.exception.Status403AlreadyExists;
+import com.example.instaclone.exception.Status430AlreadyExists;
 import com.example.instaclone.exception.entity.Status404LikeNotFoundException;
 import com.example.instaclone.exception.entity.Status404PostNotFoundException;
 import com.example.instaclone.exception.entity.Status404UserNotFoundException;
@@ -8,8 +8,8 @@ import com.example.instaclone.model.Like;
 import com.example.instaclone.model.Post;
 import com.example.instaclone.model.SponsoredPost;
 import com.example.instaclone.model.User;
-import com.example.instaclone.model.notification.NewLikeNotification;
-import com.example.instaclone.model.notification.Notification;
+import com.example.instaclone.model.notification.INotification;
+import com.example.instaclone.model.notification.NewLikeINotification;
 import com.example.instaclone.model.notification.NotificationType;
 import com.example.instaclone.repository.post.LikeRepository;
 import com.example.instaclone.repository.post.SponsoredPostRepository;
@@ -39,12 +39,12 @@ public class LikeServiceImpl implements LikeService {
     private final NotificationService notificationService;
 
     @Override
-    public Like likePostById(Long postId) throws Status403AlreadyExists, Status404UserNotFoundException, Status404PostNotFoundException {
+    public Like likePostById(Long postId) throws Status430AlreadyExists, Status404UserNotFoundException, Status404PostNotFoundException {
         Post likedPost = postService.findPostById(postId);
         User user = userService.findByUsername(authFacade.getUsername());
 
         SponsoredPost sponsoredPost = sponsoredPostRepository.findByPost(likedPost)
-                .orElseThrow(() -> new Status403AlreadyExists("Post already exists"));
+                .orElseThrow(() -> new Status430AlreadyExists("Post already exists"));
 
         if (likeRepository.findByPostAndAuthor(likedPost, user).isEmpty()) {
             likedPost.setLikesQty(likedPost.getLikesQty() + 1);
@@ -55,17 +55,17 @@ public class LikeServiceImpl implements LikeService {
                     .author(user)
                     .build();
 
-            Notification notification = new NewLikeNotification(likedPost, likedPost.getAuthor());
+            INotification INotification = new NewLikeINotification(likedPost, likedPost.getAuthor());
             if (sponsoredPost.getPost() == likedPost) {
-                notification.addRecipient(sponsoredPost.getSponsor());
+                INotification.addRecipient(sponsoredPost.getSponsor());
             }
 
-            log.info(notification.sendNotification());
-            notificationService.sendNotificationToRecipients(notification, NotificationType.LIKE);
+            log.info(INotification.sendNotification());
+            notificationService.sendNotificationToRecipients(INotification, NotificationType.LIKE);
 
             return likeRepository.save(like);
 
-        } else throw new Status403AlreadyExists("Like is already exists");
+        } else throw new Status430AlreadyExists("Like is already exists");
     }
 
     @Override

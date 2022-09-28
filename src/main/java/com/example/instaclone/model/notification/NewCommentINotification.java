@@ -5,21 +5,20 @@ import com.example.instaclone.model.User;
 import lombok.Data;
 
 @Data
-public class NewLikeNotification implements Notification {
+public class NewCommentINotification implements INotification {
 
     private Post post;
     private User postAuthor;
 
-    public NewLikeNotification(Post post, User postAuthor) {
+    public NewCommentINotification(Post post, User postAuthor) {
         this.post = post;
         this.postAuthor = postAuthor;
-        recipients.add(postAuthor);
+        recipients.add(post.getAuthor());
     }
 
     @Override
     public String sendNotification() {
-        return String.format("Post (id: %d) of %s was liked by %s",
+        return String.format("Post (id: %d) of %s was commented by %s",
                 post.getId(), post.getAuthor(), postAuthor.getUsername());
     }
 }
-

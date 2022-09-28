@@ -2,8 +2,8 @@ package com.example.instaclone.service.impl;
 
 import com.example.instaclone.exception.entity.Status404UserNotFoundException;
 import com.example.instaclone.model.User;
+import com.example.instaclone.model.notification.INotification;
 import com.example.instaclone.model.notification.Notification;
-import com.example.instaclone.model.notification.NotificationEntity;
 import com.example.instaclone.model.notification.NotificationType;
 import com.example.instaclone.repository.NotificationRepository;
 import com.example.instaclone.service.NotificationService;
@@ -24,27 +24,27 @@ public class NotificationServiceImpl implements NotificationService {
     private final UserService userService;
 
     @Override
-    public void sendNotificationToRecipients(Notification notification, NotificationType notificationType)
+    public void sendNotificationToRecipients(INotification INotification, NotificationType notificationType)
             throws Status404UserNotFoundException {
         User currentUser = userService.findByUsername(authFacade.getUsername());
-        notification.getAllRecipients().forEach(
-                user -> notificationRepository.save(NotificationEntity.builder()
+        INotification.getAllRecipients().forEach(
+                user -> notificationRepository.save(Notification.builder()
                         .sender(currentUser)
                         .receiver(user)
                         .notificationType(notificationType)
                         .build()));
-        notification.clearRecipients();
+        INotification.clearRecipients();
     }
 
     @Override
-    public List<NotificationEntity> findAllNotificationsByCurrentUser()
+    public List<Notification> findAllNotificationsByCurrentUser()
             throws Status404UserNotFoundException {
         return notificationRepository
                 .findAllByReceiver(userService.findByUsername(authFacade.getUsername()))
                 .orElseThrow(() -> new Status404UserNotFoundException("User not found"))
                 .stream()
                 .sorted(Comparator
-                        .comparing(NotificationEntity::getTimestamp)
+                        .comparing(Notification::getTimestamp)
                         .reversed())
                 .toList();
     }

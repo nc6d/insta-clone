@@ -1,6 +1,6 @@
 package com.example.instaclone.service;
 
-import com.example.instaclone.exception.Status403AlreadyExists;
+import com.example.instaclone.exception.Status430AlreadyExists;
 import com.example.instaclone.exception.entity.Status404LikeNotFoundException;
 import com.example.instaclone.exception.entity.Status404PostNotFoundException;
 import com.example.instaclone.exception.entity.Status404UserNotFoundException;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface LikeService {
 
-    Like likePostById(Long postId) throws Status403AlreadyExists, Status404LikeNotFoundException, Status404UserNotFoundException, Status404PostNotFoundException;
+    Like likePostById(Long postId) throws Status430AlreadyExists, Status404LikeNotFoundException, Status404UserNotFoundException, Status404PostNotFoundException;
     void unlikePostById(Long postId) throws Status404UserNotFoundException, Status404PostNotFoundException, Status404LikeNotFoundException;
 
     List<User> findAllLikesByPostId(Long postId) throws Status404LikeNotFoundException, Status404PostNotFoundException;

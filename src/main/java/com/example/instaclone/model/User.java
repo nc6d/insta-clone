@@ -1,6 +1,6 @@
 package com.example.instaclone.model;
 
-import com.example.instaclone.model.notification.NotificationEntity;
+import com.example.instaclone.model.notification.Notification;
 import com.example.instaclone.model.picture.ProfilePicture;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -49,7 +49,7 @@ public class User {
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "receiver")
-    private Set<NotificationEntity> notifications;
+    private Set<Notification> notifications;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")

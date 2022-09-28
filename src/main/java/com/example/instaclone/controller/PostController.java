@@ -4,9 +4,9 @@ import com.example.instaclone.exception.entity.Status404CommentNotFoundException
 import com.example.instaclone.exception.entity.Status404LikeNotFoundException;
 import com.example.instaclone.exception.entity.Status404PostNotFoundException;
 import com.example.instaclone.exception.entity.Status404UserNotFoundException;
-import com.example.instaclone.exception.file.Status412InvalidFileException;
-import com.example.instaclone.exception.file.Status412InvalidFileNameException;
-import com.example.instaclone.exception.file.Status422StorageException;
+import com.example.instaclone.exception.file.Status432InvalidFileException;
+import com.example.instaclone.exception.file.Status432InvalidFileNameException;
+import com.example.instaclone.exception.file.Status433StorageException;
 import com.example.instaclone.model.Comment;
 import com.example.instaclone.model.Post;
 import com.example.instaclone.model.SponsoredPost;
@@ -36,7 +36,7 @@ public class PostController {
     @PutMapping("/create")
     public ResponseEntity<?> createPost(@RequestParam("image[]") MultipartFile[] files,
                                              @RequestParam("caption") @Nullable String caption,
-                                             @RequestParam("sponsorId") @Nullable Long sponsorId) throws Status412InvalidFileException, Status422StorageException, Status412InvalidFileNameException, Status404UserNotFoundException {
+                                             @RequestParam("sponsorId") @Nullable Long sponsorId) throws Status432InvalidFileException, Status433StorageException, Status432InvalidFileNameException, Status404UserNotFoundException {
         if (sponsorId != null) {
             SponsoredPost sponsoredPost = postService.createPost(files, caption, sponsorId);
             return ResponseEntity.ok(sponsoredPost);

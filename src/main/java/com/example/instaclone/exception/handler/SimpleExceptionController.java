@@ -1,10 +1,10 @@
 package com.example.instaclone.exception.handler;
 
-import com.example.instaclone.exception.Status409UserAlreadyRegistered;
+import com.example.instaclone.exception.Status431UserAlreadyRegistered;
 import com.example.instaclone.exception.entity.Status404UserNotFoundException;
-import com.example.instaclone.exception.file.Status412InvalidFileException;
-import com.example.instaclone.exception.file.Status412InvalidFileNameException;
-import com.example.instaclone.exception.file.Status422StorageException;
+import com.example.instaclone.exception.file.Status432InvalidFileException;
+import com.example.instaclone.exception.file.Status432InvalidFileNameException;
+import com.example.instaclone.exception.file.Status433StorageException;
 import com.example.instaclone.exception.jwt.JwtAuthenticationException;
 import io.jsonwebtoken.JwtException;
 import lombok.extern.log4j.Log4j2;
@@ -56,8 +56,8 @@ public class SimpleExceptionController {
                 .body(error);
     }
 
-    @ExceptionHandler({Status412InvalidFileException.class, Status412InvalidFileNameException.class,
-            Status422StorageException.class})
+    @ExceptionHandler({Status432InvalidFileException.class, Status432InvalidFileNameException.class,
+            Status433StorageException.class})
     public ResponseEntity<ApiError> handleInvalidState(RuntimeException ex) {
         log.error(ex.getMessage());
         ApiError error = new ApiError(HttpStatus.PRECONDITION_FAILED);
@@ -81,7 +81,7 @@ public class SimpleExceptionController {
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler({AuthenticationException.class, JwtAuthenticationException.class,
-            Status409UserAlreadyRegistered.class})
+            Status431UserAlreadyRegistered.class})
     public ResponseEntity<ApiError> handleAuth(RuntimeException ex) {
         log.error(ex.getMessage());
         ApiError error = new ApiError(HttpStatus.FORBIDDEN);

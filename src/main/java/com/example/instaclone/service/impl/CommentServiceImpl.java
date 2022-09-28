@@ -1,6 +1,6 @@
 package com.example.instaclone.service.impl;
 
-import com.example.instaclone.exception.Status403AlreadyExists;
+import com.example.instaclone.exception.Status430AlreadyExists;
 import com.example.instaclone.exception.entity.Status404CommentNotFoundException;
 import com.example.instaclone.exception.entity.Status404PostNotFoundException;
 import com.example.instaclone.exception.entity.Status404UserNotFoundException;
@@ -8,8 +8,8 @@ import com.example.instaclone.model.Comment;
 import com.example.instaclone.model.Post;
 import com.example.instaclone.model.SponsoredPost;
 import com.example.instaclone.model.User;
-import com.example.instaclone.model.notification.NewCommentNotification;
-import com.example.instaclone.model.notification.Notification;
+import com.example.instaclone.model.notification.INotification;
+import com.example.instaclone.model.notification.NewCommentINotification;
 import com.example.instaclone.model.notification.NotificationType;
 import com.example.instaclone.repository.post.CommentRepository;
 import com.example.instaclone.repository.post.SponsoredPostRepository;
@@ -38,13 +38,13 @@ public class CommentServiceImpl implements CommentService {
     private final NotificationService notificationService;
 
     @Override
-    public Comment createComment(Long postId, String text) throws Status403AlreadyExists, Status404UserNotFoundException, Status404PostNotFoundException {
+    public Comment createComment(Long postId, String text) throws Status430AlreadyExists, Status404UserNotFoundException, Status404PostNotFoundException {
 
         User user = userService.findByUsername(authFacade.getUsername());
         Post post = postService.findPostById(postId);
 
         SponsoredPost sponsoredPost = sponsoredPostRepository.findByPost(post)
-                .orElseThrow(() -> new Status403AlreadyExists("Post already exists"));
+                .orElseThrow(() -> new Status430AlreadyExists("Post already exists"));
 
         log.info("Creating comment by user {}", user.getUsername());
 
@@ -54,13 +54,13 @@ public class CommentServiceImpl implements CommentService {
                 .author(user)
                 .build();
 
-        Notification notification = new NewCommentNotification(post, post.getAuthor());
+        INotification INotification = new NewCommentINotification(post, post.getAuthor());
         if (sponsoredPost.getPost() == post) {
-            notification.addRecipient(sponsoredPost.getSponsor());
+            INotification.addRecipient(sponsoredPost.getSponsor());
         }
-        log.info(notification.sendNotification());
+        log.info(INotification.sendNotification());
 
-        notificationService.sendNotificationToRecipients(notification, NotificationType.COMMENT);
+        notificationService.sendNotificationToRecipients(INotification, NotificationType.COMMENT);
 
         return commentRepository.save(comment);
     }

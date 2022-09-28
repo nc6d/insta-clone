@@ -1,14 +1,14 @@
 package com.example.instaclone.controller;
 
-import com.example.instaclone.exception.Status409SubscriptionException;
+import com.example.instaclone.exception.Status434SubscriptionException;
 import com.example.instaclone.exception.entity.Status404UserNotFoundException;
-import com.example.instaclone.exception.file.Status412InvalidFileException;
-import com.example.instaclone.exception.file.Status412InvalidFileNameException;
-import com.example.instaclone.exception.file.Status422StorageException;
+import com.example.instaclone.exception.file.Status432InvalidFileException;
+import com.example.instaclone.exception.file.Status432InvalidFileNameException;
+import com.example.instaclone.exception.file.Status433StorageException;
 import com.example.instaclone.model.Post;
 import com.example.instaclone.model.Subscription;
 import com.example.instaclone.model.User;
-import com.example.instaclone.model.notification.NotificationEntity;
+import com.example.instaclone.model.notification.Notification;
 import com.example.instaclone.service.NotificationService;
 import com.example.instaclone.service.PostService;
 import com.example.instaclone.service.UserService;
@@ -36,14 +36,14 @@ public class UserController {
 
     @PutMapping("/update/avatar")
     public ResponseEntity<User> updateAvatar(@RequestParam("image") MultipartFile file)
-            throws Status412InvalidFileException, Status422StorageException, Status412InvalidFileNameException, Status404UserNotFoundException {
+            throws Status432InvalidFileException, Status433StorageException, Status432InvalidFileNameException, Status404UserNotFoundException {
         userService.updatePhoto(file);
         return ResponseEntity.ok(userService.findByUsername(authFacade.getUsername()));
     }
 
     @PostMapping("/{userId}/subscribe")
     public ResponseEntity<Subscription> subscribeUser(@PathVariable Long userId)
-            throws Status409SubscriptionException, Status404UserNotFoundException {
+            throws Status434SubscriptionException, Status404UserNotFoundException {
         return ResponseEntity.ok(subscriptionServiceImpl.subscribeUser(userId));
 
     }
@@ -69,7 +69,7 @@ public class UserController {
     }
 
     @GetMapping("/notifications")
-    public ResponseEntity<List<NotificationEntity>> getAllNotificationsByCurrentUser()
+    public ResponseEntity<List<Notification>> getAllNotificationsByCurrentUser()
             throws Status404UserNotFoundException {
         return ResponseEntity.ok(notificationService.findAllNotificationsByCurrentUser());
     }

@@ -1,11 +1,11 @@
 package com.example.instaclone.service.impl;
 
-import com.example.instaclone.exception.Status409SubscriptionException;
+import com.example.instaclone.exception.Status434SubscriptionException;
 import com.example.instaclone.exception.entity.Status404UserNotFoundException;
 import com.example.instaclone.model.Subscription;
 import com.example.instaclone.model.User;
-import com.example.instaclone.model.notification.NewSubscriptionNotification;
-import com.example.instaclone.model.notification.Notification;
+import com.example.instaclone.model.notification.INotification;
+import com.example.instaclone.model.notification.NewSubscriptionINotification;
 import com.example.instaclone.model.notification.NotificationType;
 import com.example.instaclone.repository.user.SubscriptionRepository;
 import com.example.instaclone.service.NotificationService;
@@ -33,7 +33,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private final NotificationService notificationService;
 
     @Override
-    public Subscription subscribeUser(Long followedId) throws Status409SubscriptionException, Status404UserNotFoundException {
+    public Subscription subscribeUser(Long followedId) throws Status434SubscriptionException, Status404UserNotFoundException {
 
         User follower = userService.findByUsername(authFacade.getUsername());
         User followed = userService.findById(followedId);
@@ -44,13 +44,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
                     .followed(followed)
                     .build();
 
-            Notification notification = new NewSubscriptionNotification(followed);
-            log.info(notification.sendNotification());
-            notificationService.sendNotificationToRecipients(notification, NotificationType.SUBSCRIPTION);
+            INotification INotification = new NewSubscriptionINotification(followed);
+            log.info(INotification.sendNotification());
+            notificationService.sendNotificationToRecipients(INotification, NotificationType.SUBSCRIPTION);
 
             return subscriptionRepository.save(subscription);
         } else {
-            throw new Status409SubscriptionException("Subscription is impossible");
+            throw new Status434SubscriptionException("Subscription is impossible");
         }
     }
 

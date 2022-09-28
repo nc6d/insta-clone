@@ -5,12 +5,12 @@ import lombok.Data;
 
 
 @Data
-public class NewSubscriptionNotification implements Notification {
+public class NewSubscriptionINotification implements INotification {
 
     private User userWasSubscribed;
     private NotificationType notificationType;
 
-    public NewSubscriptionNotification(User userWasSubscribed) {
+    public NewSubscriptionINotification(User userWasSubscribed) {
         this.userWasSubscribed = userWasSubscribed;
         this.notificationType = NotificationType.SUBSCRIPTION;
         recipients.add(userWasSubscribed);

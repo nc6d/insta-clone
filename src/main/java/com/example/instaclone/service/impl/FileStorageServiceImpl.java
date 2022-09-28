@@ -1,8 +1,8 @@
 package com.example.instaclone.service.impl;
 
-import com.example.instaclone.exception.file.Status412InvalidFileException;
-import com.example.instaclone.exception.file.Status412InvalidFileNameException;
-import com.example.instaclone.exception.file.Status422StorageException;
+import com.example.instaclone.exception.file.Status432InvalidFileException;
+import com.example.instaclone.exception.file.Status432InvalidFileNameException;
+import com.example.instaclone.exception.file.Status433StorageException;
 import com.example.instaclone.model.ImageMetadata;
 import com.example.instaclone.model.User;
 import com.example.instaclone.service.FileStorageService;
@@ -40,16 +40,16 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
     @Override
-    public ImageMetadata upload(MultipartFile file, User user) throws Status422StorageException {
+    public ImageMetadata upload(MultipartFile file, User user) throws Status433StorageException {
 
             String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
 
             try {
                 if (file.isEmpty()) {
-                    throw new Status412InvalidFileException("Failed to store empty file - " + filename);
+                    throw new Status432InvalidFileException("Failed to store empty file - " + filename);
                 }
                 if (filename.contains("..")) {
-                    throw new Status412InvalidFileNameException("Invalid filename - " + filename);
+                    throw new Status432InvalidFileNameException("Invalid filename - " + filename);
                 }
 
                 String extension = FilenameUtils.getExtension(filename);
@@ -71,9 +71,9 @@ public class FileStorageServiceImpl implements FileStorageService {
 
                 return new ImageMetadata(newFilename, fileUrl, Objects.requireNonNull(file.getContentType()));
 
-            } catch (IOException | Status412InvalidFileException e) {
-                throw new Status422StorageException("Failed to store file " + filename, e);
-            } catch (Status412InvalidFileNameException e) {
+            } catch (IOException | Status432InvalidFileException e) {
+                throw new Status433StorageException("Failed to store file " + filename, e);
+            } catch (Status432InvalidFileNameException e) {
                 throw new RuntimeException(e);
             }
 

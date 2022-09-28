@@ -1,8 +1,8 @@
 package com.example.instaclone.service.impl;
 
-import com.example.instaclone.exception.Status409UserAlreadyRegistered;
+import com.example.instaclone.exception.Status431UserAlreadyRegistered;
 import com.example.instaclone.exception.entity.Status404UserNotFoundException;
-import com.example.instaclone.exception.file.Status422StorageException;
+import com.example.instaclone.exception.file.Status433StorageException;
 import com.example.instaclone.model.ImageMetadata;
 import com.example.instaclone.model.User;
 import com.example.instaclone.model.picture.ProfilePicture;
@@ -29,10 +29,10 @@ public class UserServiceImpl implements UserService {
     private final ImageStorageService imageStorageService;
 
     @Override
-    public User register(User user) throws Status409UserAlreadyRegistered {
+    public User register(User user) throws Status431UserAlreadyRegistered {
         userRepository.findByUsername(user.getUsername())
                 .ifPresent(finalUser -> {
-                    throw new Status409UserAlreadyRegistered("Username " + user.getUsername() + " is already exists. Try another one!");
+                    throw new Status431UserAlreadyRegistered("Username " + user.getUsername() + " is already exists. Try another one!");
                 });
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return saveUser(user);
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updatePhoto(MultipartFile file)
-            throws Status404UserNotFoundException, Status422StorageException {
+            throws Status404UserNotFoundException, Status433StorageException {
         User user = findByUsername(authFacade.getUsername());
         ImageMetadata image = imageStorageService.upload(file, user);
         userRepository.findByUsername(user.getUsername())

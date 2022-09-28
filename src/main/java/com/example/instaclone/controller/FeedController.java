@@ -1,6 +1,6 @@
 package com.example.instaclone.controller;
 
-import com.example.instaclone.exception.Status403AlreadyExists;
+import com.example.instaclone.exception.Status430AlreadyExists;
 import com.example.instaclone.exception.entity.Status404LikeNotFoundException;
 import com.example.instaclone.exception.entity.Status404PostNotFoundException;
 import com.example.instaclone.exception.entity.Status404UserNotFoundException;
@@ -35,7 +35,7 @@ public class FeedController {
 
     @PutMapping("/comment-post/{postId}")
     public ResponseEntity<Comment> createComment(@PathVariable Long postId, @RequestParam String text)
-            throws Status403AlreadyExists, Status404UserNotFoundException, Status404PostNotFoundException {
+            throws Status430AlreadyExists, Status404UserNotFoundException, Status404PostNotFoundException {
 
         Comment comment = commentService.createComment(postId, text);
         return new ResponseEntity<>(comment, HttpStatus.OK);
@@ -43,7 +43,7 @@ public class FeedController {
 
     @PutMapping("/like-post/{postId}")
     public ResponseEntity<Like> likePost(@PathVariable Long postId)
-            throws Status404LikeNotFoundException, Status403AlreadyExists, Status404UserNotFoundException, Status404PostNotFoundException {
+            throws Status404LikeNotFoundException, Status430AlreadyExists, Status404UserNotFoundException, Status404PostNotFoundException {
 
         return ResponseEntity.ok(likeService.likePostById(postId));
     }

@@ -1,24 +1,40 @@
 package com.example.instaclone.model.notification;
 
 import com.example.instaclone.model.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.*;
+import java.sql.Timestamp;
 
-public interface Notification {
-    Set<User> recipients = new HashSet<>();
-    String sendNotification();
-    default void addRecipient(User user){
-        recipients.add(user);
-    }
-    default void deleteRecipient(User user){
-        recipients.remove(user);
-    }
-    default void clearRecipients(){
-        recipients.clear();
-    }
-    default Set<User> getAllRecipients(){
-        return recipients;
-    }
+@Entity
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "notification")
+public class Notification {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "notification_id")
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "receiver_id")
+    private User receiver;
+
+    @ManyToOne
+    @JoinColumn(name = "sender_id")
+    private User sender;
+
+    @Enumerated(EnumType.STRING)
+    private NotificationType notificationType;
+
+    @CreationTimestamp
+    private Timestamp timestamp;
 
 }

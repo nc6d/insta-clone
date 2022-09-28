@@ -1,6 +1,6 @@
 package com.example.instaclone.service.impl;
 
-import com.example.instaclone.exception.file.Status422StorageException;
+import com.example.instaclone.exception.file.Status433StorageException;
 import com.example.instaclone.model.ImageMetadata;
 import com.example.instaclone.model.User;
 import com.example.instaclone.model.picture.PostPicture;
@@ -27,7 +27,7 @@ public class ImageStorageService implements FileStorageService {
     private final PostPictureRepository postPictureRepository;
 
     @Override
-    public ImageMetadata upload(MultipartFile file, User user) throws Status422StorageException {
+    public ImageMetadata upload(MultipartFile file, User user) throws Status433StorageException {
 
         String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         log.info("storing photo {}", filename);
