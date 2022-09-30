@@ -43,13 +43,15 @@ public class FeedController {
 
     @PutMapping("/like-post/{postId}")
     public ResponseEntity<Like> likePost(@PathVariable Long postId)
-            throws Status404LikeNotFoundException, Status430AlreadyExists, Status404UserNotFoundException, Status404PostNotFoundException {
+            throws Status404LikeNotFoundException, Status430AlreadyExists, Status404UserNotFoundException,
+            Status404PostNotFoundException {
 
         return ResponseEntity.ok(likeService.likePostById(postId));
     }
 
     @PutMapping("/unlike-post/{postId}")
-    public void unlikePost(@PathVariable Long postId) throws Status404LikeNotFoundException, Status404UserNotFoundException, Status404PostNotFoundException {
+    public void unlikePost(@PathVariable Long postId)
+            throws Status404LikeNotFoundException, Status404UserNotFoundException, Status404PostNotFoundException {
         likeService.unlikePostById(postId);
     }
 }

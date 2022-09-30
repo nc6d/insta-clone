@@ -16,7 +16,7 @@ public class PostPicture {
     @Column(name = "picture_id")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 

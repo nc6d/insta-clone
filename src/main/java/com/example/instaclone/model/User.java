@@ -37,22 +37,27 @@ public class User {
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "author")
+    @ToString.Exclude
     private List<Post> posts;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "follower")
+    @ToString.Exclude
     private Set<Subscription> followers;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "followed")
+    @ToString.Exclude
     private Set<Subscription> following;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "receiver")
+    @ToString.Exclude
     private Set<Notification> notifications;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
+    @ToString.Exclude
     private List<ProfilePicture> userProfilePictures;
 
     public void addAvatar(ProfilePicture profilePicture) {

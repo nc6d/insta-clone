@@ -35,8 +35,10 @@ public class PostController {
 
     @PutMapping("/create")
     public ResponseEntity<?> createPost(@RequestParam("image[]") MultipartFile[] files,
-                                             @RequestParam("caption") @Nullable String caption,
-                                             @RequestParam("sponsorId") @Nullable Long sponsorId) throws Status432InvalidFileException, Status433StorageException, Status432InvalidFileNameException, Status404UserNotFoundException {
+                                        @RequestParam("caption") @Nullable String caption,
+                                        @RequestParam("sponsorId") @Nullable Long sponsorId)
+            throws Status432InvalidFileException, Status433StorageException, Status432InvalidFileNameException,
+            Status404UserNotFoundException {
         if (sponsorId != null) {
             SponsoredPost sponsoredPost = postService.createPost(files, caption, sponsorId);
             return ResponseEntity.ok(sponsoredPost);
@@ -46,11 +48,14 @@ public class PostController {
     }
 
     @GetMapping("{postId}/comments")
-    public ResponseEntity<Set<Comment>> getCommentsByPostId (@PathVariable Long postId) throws Status404CommentNotFoundException, Status404PostNotFoundException {
+    public ResponseEntity<Set<Comment>> getCommentsByPostId(@PathVariable Long postId)
+            throws Status404CommentNotFoundException, Status404PostNotFoundException {
         return ResponseEntity.ok(commentService.findAllCommentsByPostId(postId));
     }
+
     @GetMapping("/{postId}/likes")
-    public ResponseEntity<List<User>> getUserLikesByPostId(@PathVariable Long postId) throws Status404LikeNotFoundException, Status404PostNotFoundException {
+    public ResponseEntity<List<User>> getUserLikesByPostId(@PathVariable Long postId)
+            throws Status404LikeNotFoundException, Status404PostNotFoundException {
         return ResponseEntity.ok(likeService.findAllLikesByPostId(postId));
 
     }

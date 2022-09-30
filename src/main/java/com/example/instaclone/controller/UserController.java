@@ -36,7 +36,8 @@ public class UserController {
 
     @PutMapping("/update/avatar")
     public ResponseEntity<User> updateAvatar(@RequestParam("image") MultipartFile file)
-            throws Status432InvalidFileException, Status433StorageException, Status432InvalidFileNameException, Status404UserNotFoundException {
+            throws Status432InvalidFileException, Status433StorageException, Status432InvalidFileNameException,
+            Status404UserNotFoundException {
         userService.updatePhoto(file);
         return ResponseEntity.ok(userService.findByUsername(authFacade.getUsername()));
     }
@@ -47,8 +48,10 @@ public class UserController {
         return ResponseEntity.ok(subscriptionServiceImpl.subscribeUser(userId));
 
     }
+
     @PostMapping("/{userId}/unsubscribe")
-    public ResponseEntity<User> unsubscribeUser(@PathVariable Long userId) throws Status404UserNotFoundException {
+    public ResponseEntity<User> unsubscribeUser(@PathVariable Long userId)
+            throws Status404UserNotFoundException {
         subscriptionServiceImpl.removeSubscription(userId);
         return ResponseEntity.ok(userService.findById(userId));
     }
@@ -59,12 +62,12 @@ public class UserController {
     }
 
     @GetMapping("{userId}/subscriptions")
-    public ResponseEntity<List<User>> getAllSubscriptionsByLoggedInUser(@PathVariable Long userId){
+    public ResponseEntity<List<User>> getAllSubscriptionsByLoggedInUser(@PathVariable Long userId) {
         return ResponseEntity.ok(subscriptionServiceImpl.getAllSubscriptionsByUserId(userId));
     }
 
     @GetMapping("{userId}/subscribers")
-    public ResponseEntity<List<User>> getAllSubscribersByCurrentUser(@PathVariable Long userId){
+    public ResponseEntity<List<User>> getAllSubscribersByCurrentUser(@PathVariable Long userId) {
         return ResponseEntity.ok(subscriptionServiceImpl.getAllSubscribersByUserId(userId));
     }
 

@@ -25,18 +25,18 @@ public class Post {
     @JoinColumn(name = "author_id")
     User author;
 
-//    String imageUrl;
-
     String caption;
 
     Integer likesQty;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "post")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
+    @ToString.Exclude
     Set<Comment> comments;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "post")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
+    @ToString.Exclude
     Set<Like> likes;
 
     @Transient
